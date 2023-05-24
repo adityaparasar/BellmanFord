@@ -1,55 +1,66 @@
-#include<stdio.h>
-#include<stdio.h>
-int max, min;
-int a[100];
-void maxmin(int i, int j)
-{
- int max1, min1, mid;
- if(i==j)
- {
-  max = min = a[i];
- }
- else
- {
-  if(i == j-1)
-  {
-   if(a[i] <a[j])
-   {
-    max = a[j];
-    min = a[i];
-   }
-   else
-   {
-    max = a[i];
-    min = a[j];
-   }
-  }
-  else
-  {
-   mid = (i+j)/2;
-   maxmin(i, mid);
-   max1 = max; min1 = min;
-   maxmin(mid+1, j);
-   if(max <max1)
-    max = max1;
-   if(min > min1)
-    min = min1;
-  }
- }
-}
-int main ()
-{
- int i, num;
- printf ("\nEnter the total number of numbers : ");
- scanf ("%d",&num);
- printf ("Enter the numbers : \n");
- for (i=1;i<=num;i++)
-  scanf ("%d",&a[i]);
+#include <stdio.h>
+void knapsack(int n,float weight[],float profit[],float capacity){
+    float x[50], tp = 0;
+    int i,u;
+    u = capacity;
+    for(i = 0; i < n; i++){
+        x[i] = 0.0;
 
- max = a[0];
- min = a[0];
- maxmin(1, num);
- printf ("Minimum element in an array : %d\n", min);
- printf ("Maximum element in an array : %d\n", max);
- return 0;
+    }
+    for(i = 0; i < n; i++){
+        if(weight[i]>u){
+            break;
+        }else{
+            x[i] = 1.0;
+            tp += profit[i];
+            u -= weight[i];
+        }
+    }
+    if(i < n){
+        x[i] = u / weight[i];
+
+    }
+    tp += x[i]*profit[i];
+    printf("\nThe resultant vector is: ");
+    for(i = 0; i<n; i++){
+        printf("%f\t",x[i]);
+    }
+    printf("\nThe Maximum profit is: %f", tp);
+}
+
+int main(){
+    float weight[50], profit[50], capacity;
+    int i,j,num;
+    float ratio[50], temp;
+    printf("Enter the number of objects: ");
+    scanf("%d", &num);
+    printf("Enter the weight and profit of each objects: ");
+    for(i = 0; i < num; i++){
+        scanf("%f %f", &weight[i], &profit[i]);
+    }
+    printf("Enter the capacity of knapsack: ");
+    scanf("%f", &capacity);
+    for(i = 0; i < num; i++){
+        ratio[i] = profit[i]/weight[i];
+    }
+    for(i = 0; i < num; i++){
+        for(j = i+1; j < num; j++){
+            if(ratio[i]<ratio[j]){
+                temp = ratio[j];
+                ratio[j] = ratio[i];
+                ratio[i] = temp;
+
+                temp = weight[j];
+                weight[j] = weight[i];
+                weight[i] = temp;
+
+                temp = profit[j];
+                profit[j] = profit[i];
+                profit[i] = temp;
+            }
+        }
+    }
+    knapsack(num,weight,profit,capacity);
+    return 0;
+
 }
