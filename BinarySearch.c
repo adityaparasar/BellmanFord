@@ -1,55 +1,39 @@
-#include<stdio.h>
-#include<stdio.h>
-int max, min;
-int a[100];
-void maxmin(int i, int j)
-{
- int max1, min1, mid;
- if(i==j)
- {
-  max = min = a[i];
- }
- else
- {
-  if(i == j-1)
-  {
-   if(a[i] <a[j])
-   {
-    max = a[j];
-    min = a[i];
-   }
-   else
-   {
-    max = a[i];
-    min = a[j];
-   }
-  }
-  else
-  {
-   mid = (i+j)/2;
-   maxmin(i, mid);
-   max1 = max; min1 = min;
-   maxmin(mid+1, j);
-   if(max <max1)
-    max = max1;
-   if(min > min1)
-    min = min1;
-  }
- }
-}
-int main ()
-{
- int i, num;
- printf ("\nEnter the total number of numbers : ");
- scanf ("%d",&num);
- printf ("Enter the numbers : \n");
- for (i=1;i<=num;i++)
-  scanf ("%d",&a[i]);
+#include <stdio.h>
+int binarySearch(int a[],int n, int data){
+    int l,r,mid;
+    l = 0; r = n-1;
 
- max = a[0];
- min = a[0];
- maxmin(1, num);
- printf ("Minimum element in an array : %d\n", min);
- printf ("Maximum element in an array : %d\n", max);
- return 0;
+    while(l <= r){
+        mid = (l+r)/2;
+        if(a[mid] == data){
+            return mid;
+        }else if(a[mid] > data){
+            r = mid - 1;
+            
+        }else{
+            l = mid + 1;
+        }
+        
+    }
+    return -1;
+}
+
+int main(){
+    int a[] = {2,3,4,5,6,7,8,9};
+    int n = sizeof(a)/sizeof(int);
+    int data;
+    printf("Elements of array are: ");
+    for(int i = 0; i < n; i++){
+        printf("\t%d", a[i]);
+    }
+    printf("\nEnter the element that you want to search for: ");
+    scanf("%d", &data);
+    int result = binarySearch(a,n,data);
+    if(result == -1){
+        printf("Element not found");
+    }else{
+        printf("Element found at %d index", result);
+    }
+    return 0;
+
 }
